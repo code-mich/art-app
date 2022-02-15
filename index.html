@@ -1,22 +1,43 @@
 <!doctype html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <title>Rijksmuseum API App</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
   <header>
     <div class="container">
       <h1 id="page-title">Art with Monkeys</h1>
+
+      <form action="">
+        <label for="animalChoices">Select your animal to see some art!</label>
+
+        <select name="animalChoices" id="animalChoices">
+          <option value="monkey">Monkeys</option>
+          <option value="whale">Whales</option>
+          <option value="cow">Cows</option>
+          <option value="shark">Sharks</option>
+          <option value="mice">Mice</option>
+          <option value="bird">Birds</option>
+          <option value="penguin">Penguins</option>
+          <option value="turtle">Turtles</option>
+        </select>
+      </form>
     </div>
   </header>
 
   <main>
-    <div class="wrapper" id="artwork"></div>
+    <div class="wrapper">
+      <!-- art from API will be added to this ul -->
+      <ul id="artwork"></ul>
+    </div>
   </main>
-  
+
   <script src="app.js"></script>
 </body>
+
 </html>
