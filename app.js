@@ -13,7 +13,7 @@ artApp.getArt = function (usersChosenAnimal) {
     // use the URL constructor to format the API endpoint to which we will be making our request
     const url = new URL(artApp.apiUrl);
 
-    console.log(url);
+    // console.log(url);
 
     // format and add our parameters to our URL
     url.search = new URLSearchParams({
@@ -30,7 +30,7 @@ artApp.getArt = function (usersChosenAnimal) {
             return apiResponse.json()
         })
         .then(function (artFromTheApi) {
-            console.log(artFromTheApi.artObjects)
+            // console.log(artFromTheApi.artObjects)
 
             // call the displayArt method here, where we are SURE that we have the data from the API
             // take the data returned from the api, pass it to the display method
@@ -40,8 +40,12 @@ artApp.getArt = function (usersChosenAnimal) {
 
 // create a amethod which will take the API data and display on our page
 artApp.displayArt = function (artArray) {
+    // clear the gallery of old art BEFORE adding new art to the page
+    const ulElement = document.querySelector('#artwork');
+    ulElement.innerHTML = '';
+
     artArray.forEach(function (individualArtObject) {
-        console.log(individualArtObject);
+        // console.log(individualArtObject);
 
         // extract the data from the API (artist name, title, image URL. alt text) and put it on the page
         const artworkTitle = individualArtObject.title;
@@ -49,7 +53,7 @@ artApp.displayArt = function (artArray) {
         const artist = individualArtObject.principalOrFirstMaker;
         const altText = individualArtObject.longTitle;
 
-        console.log(artworkTitle, artworkImage, artist, altText);
+        // console.log(artworkTitle, artworkImage, artist, altText);
 
         // create an li element in which this information will be added
         const listElement = document.createElement('li');
@@ -78,16 +82,49 @@ artApp.displayArt = function (artArray) {
         listElement.append(heading, image, paragraphElement);
 
         // add the li to the ul 
-        const ulElement = document.querySelector('#artwork');
+
         ulElement.appendChild(listElement);
+    })
+}
+
+// Create a method which will update the heading of the page
+artApp.updateAnimalHeading = function (animal) {
+    document.querySelector('#page-title span').textContent = `${animal}s`
+}
+
+// create a method which sets up all of the event listeners within the app
+artApp.eventListenerSetup = function () {
+    // 1st event listener on the select element )whenever the user selects a different option, take the chosen animal and get the art related to that animal
+    const selectElement = document.querySelector('#animalChoices');
+
+    // when the user selects a different animal option -- AKA when the animal choice CHANGES, get me art related to the new animal
+    selectElement.addEventListener('change', function () {
+        console.log('i have selected a NEW animal')
+
+        // this will give us back the object which owns the currently executing code (AKA the select element object node)
+        // console.log(this);
+
+        // this will give us the value of the user's selected option
+        // console.log(this.value)
+
+        const selectedAnimal = this.value;
+
+        // pass the user's selected animal into the getArt method
+        artApp.getArt(selectedAnimal);
+
+        // update the title of the page to reflect the user's animal choice
+        artApp.updateAnimalHeading(selectedAnimal);
     })
 }
 
 // create an initialization method which will kickstart our app
 artApp.init = function () {
 
+    // set up our event listeners (so they are ready to go as soon as the user moves through the app)
+    artApp.eventListenerSetup();
+
     // call the method which will get us our art data
-    artApp.getArt('whales');
+    artApp.getArt('bear');
 }
 
 // call the initialization method (at the end of our code)
